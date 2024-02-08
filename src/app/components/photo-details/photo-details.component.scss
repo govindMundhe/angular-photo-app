@@ -1,0 +1,26 @@
+/* Styling for the photo details view */
+.photo-details {
+    max-width: 600px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .photo-details img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .photo-details h2 {
+    padding: 10px;
+    margin: 0;
+    background-color: #f8f9fa;
+    text-align: center;
+  }
+  
+  .photo-info {
+    padding: 20px;
+  }
+  

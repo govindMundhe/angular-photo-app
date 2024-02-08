@@ -1,0 +1,27 @@
+/* Grid layout for photos */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 20px;
+  }
+  
+  .photo-item {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .photo-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .photo-item p {
+    padding: 10px;
+    margin: 0;
+    background-color: #f8f9fa;
+    text-align: center;
+  }
+  
