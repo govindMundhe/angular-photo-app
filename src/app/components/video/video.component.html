@@ -1,0 +1,193 @@
+<div class="video-container">
+  <div class="video-section">
+    <video
+      class="video"
+      #videoElement
+      (loadedmetadata)="onMetadataLoaded(videoElement)"
+      (timeupdate)="onTimeUpdate(videoElement)"
+    >
+      <source src="{{ videoArray[currentVid] }}" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <div class="footer-section">
+      <div class="controls">
+        <div class="left">
+          <div class="video-meta">
+            <img src="https://placehold.co/40x40" alt="Thumbnail" />
+            <div class="video-text">
+              <p>{{ videoTitle }}</p>
+              <em>{{ videoAuthor }}</em>
+            </div>
+            <div class="like-icon" (click)="toggleLikeStatus()">
+              <svg
+                width="25px"
+                height="25px"
+                viewBox="0 0 30 30"
+                [class.filled]="videoLikeStatus"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12.1 4.9l.9.9.9-.9c2.3-2.3 6.1-2.3 8.4 0 2.3 2.3 2.3 6.1 0 8.4l-9 9-9-9c-2.3-2.3-2.3-6.1 0-8.4 2.3-2.3 6.1-2.3 8.4 0z"
+                  class="heart"
+                  [attr.fill]="videoLikeStatus ? 'red' : 'none'"
+                  stroke="red"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="middle">
+          <div class="play-control">
+            <button
+            class="ctrl-btn"
+              (click)="prev(currentVid, videoElement)"
+              [disabled]="currentVid === 0"
+            >
+            <svg class="ctrl-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 5V19H15V5H17Z" fill="#00BFFF"/>
+                <path d="M5 12L13 19V5L5 12Z" fill="#00BFFF"/>
+              </svg>
+              
+            </button>
+            <button (click)="playPause(videoElement)">
+                @if (videoElement.paused) {
+                    <svg 
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M8 5V19L19 12L8 5Z" fill="#00BFFF" />
+              </svg>
+                }
+
+                @if (!videoElement.paused) {
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5H11V19H8V5Z" fill="#00BFFF"/>
+                        <path d="M13 5H16V19H13V5Z" fill="#00BFFF"/>
+                      </svg>
+                      
+                }
+              
+            </button>
+            <button class="ctrl-btn"
+              (click)="next(currentVid, videoElement)"
+              [disabled]="currentVid === videoArray.length - 1"
+            >
+            <svg class="ctrl-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 5V19H9V5H7Z" fill="#00BFFF"/>
+                <path d="M11 5V19L19 12L11 5Z" fill="#00BFFF"/>
+              </svg>
+              
+            </button>
+          </div>
+
+          <div class="seek-control">
+            <span>{{ formatTime(currentTime) }}</span>
+            <input
+              type="range"
+              min="0"
+              max="{{ duration }}"
+              [value]="currentTime"
+              (input)="seekVideo(videoElement, $event)"
+            />
+            <span class="duration">{{ formatTime(duration) }}</span>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="hamburder-icon">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 6H21"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M3 12H21"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M3 18H21"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <div class="vol-controls">
+            <span class="volToggle" (click)="toggleVol(videoElement)">
+              @if (!videoElement.muted) {
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M3 9V15H7L12 20V4L7 9H3Z" fill="#B0BEC5" />
+                <path
+                  d="M16.5 12C16.5 10.23 15.48 8.71 14 7.97V16.02C15.48 15.29 16.5 13.77 16.5 12Z"
+                  fill="#B0BEC5"
+                />
+                <path
+                  d="M14 3.23V5.29C16.89 6.15 19 8.83 19 12C19 15.17 16.89 17.85 14 18.71V20.77C18.01 19.86 21 16.28 21 12C21 7.72 18.01 4.14 14 3.23Z"
+                  fill="#B0BEC5"
+                />
+                <line
+                  x1="22"
+                  y1="2"
+                  x2="2"
+                  y2="22"
+                  stroke="#B0BEC5"
+                  stroke-width="2"
+                />
+              </svg>
+              } @if (videoElement.muted){
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M3 9V15H7L12 20V4L7 9H3Z" fill="#4CAF50" />
+                <path
+                  d="M16.5 12C16.5 10.23 15.48 8.71 14 7.97V16.02C15.48 15.29 16.5 13.77 16.5 12Z"
+                  fill="#4CAF50"
+                />
+                <path
+                  d="M14 3.23V5.29C16.89 6.15 19 8.83 19 12C19 15.17 16.89 17.85 14 18.71V20.77C18.01 19.86 21 16.28 21 12C21 7.72 18.01 4.14 14 3.23Z"
+                  fill="#4CAF50"
+                />
+              </svg>
+              }
+            </span>
+            <input
+              type="range"
+              class="vol-range"
+              min="0"
+              max="100"
+              [disabled]="videoElement.muted"
+              [value]="vol"
+              (input)="adjustVol(videoElement, $event)"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
